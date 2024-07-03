@@ -1,0 +1,131 @@
+
+body{
+    background-color: #302c2c!important;
+    text-align: center;
+}
+
+#container{
+    min-width: 500px;
+    min-height: 300px;
+    margin: 10px;
+}
+
+
+.visible{
+    display: none!important;
+}
+
+#cookies{
+    max-width: 400px;
+    max-height: 300px;
+    overflow: auto;
+}
+
+#plus{
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    width: 40px;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+#plus:hover{
+    transition: 0.25s;
+    cursor: pointer;
+    background-color: rgb(155, 154, 154);
+}
+
+.prueba{
+    max-width: 400px;
+    max-height: 300px;
+    overflow: auto;
+}
+
+#buttons{
+    text-align: center;
+}
+
+#arrow{
+    width: 20px!important;
+}
+
+#buttonarrow{
+    padding: 10px;
+    border-radius: 20px;
+    border: 0px;
+    position: absolute;
+    top: 10px;
+    left: 5px;
+    fill: white;
+}
+
+
+
+.letters{
+    color: #D2B48C;
+    text-align: center;
+}
+
+.accordion-button{
+    border: 0px!important;
+    background-color: gray!important;
+    color: white!important;
+}
+
+.accordion-item{
+    margin: auto;
+    width: 500px!important;
+    text-align: left!important;
+}
+
+.accordion-button:after {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
+}
+
+.accordion-body{
+    background-color: rgb(155, 154, 154)!important;
+}
+
+input{
+    width: 300px!important;
+    margin-bottom: 10px!important;
+}
+
+textarea{
+    width: 300px!important;
+    height: 150px!important;
+}
+
+img{
+    width: 50px;
+}
+
+
+.save{
+    padding: 5px;
+    /*display: block;*/
+    border-radius: 10px;
+}
+
+.save:hover{
+    background-color: green;
+    cursor: pointer;
+}
+
+.delete{
+    padding: 5px;
+    display: block;
+    border-radius: 10px;
+}
+
+.delete:hover{
+    background-color: red;
+    cursor: pointer;
+}
+
+
+.nocookies{
+    color: white;
+    margin: auto;
+}

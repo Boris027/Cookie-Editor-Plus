@@ -1,0 +1,37 @@
+
+body{
+    background-color: #302c2c!important;
+}
+
+
+#container{
+    min-width: 200px;
+    margin: 10px;
+   
+}
+
+
+.visible{
+    display: none!important;
+}
+
+#cookies{
+    max-width: 400px;
+    max-height: 300px;
+    overflow: auto;
+}
+
+.prueba{
+    max-width: 400px;
+    max-height: 300px;
+    overflow: auto;
+}
+
+#buttons{
+    text-align: center;
+}
+
+.letters{
+    color: #D2B48C;
+    text-align: center;
+}

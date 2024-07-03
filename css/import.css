@@ -1,0 +1,59 @@
+
+body{
+    background-color: #302c2c!important;
+    text-align: center;
+}
+
+#container{
+    min-width: 500px;
+    margin: 10px;
+}
+
+
+.visible{
+    display: none!important;
+}
+
+#cookies{
+    max-width: 400px;
+    max-height: 300px;
+    overflow: auto;
+}
+
+.prueba{
+    max-width: 400px;
+    max-height: 300px;
+    overflow: auto;
+}
+
+#buttons{
+    text-align: center;
+}
+
+#arrow{
+    width: 20px!important;
+}
+
+#buttonarrow{
+    padding: 10px;
+    border-radius: 20px;
+    border: 0px;
+    position: absolute;
+    left: 5px;
+}
+
+.letters{
+    color: #D2B48C;
+    text-align: center;
+}
+
+/*
+textarea{
+    background-color: #D2B48C!important;
+    
+}
+*/
+
+#text10{
+    height: 200px;
+}
