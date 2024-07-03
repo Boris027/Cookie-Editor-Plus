@@ -65,6 +65,8 @@ document.addEventListener('DOMContentLoaded',async function(){
     const input2=document.createElement('textarea')
     input2.id='input2'+number
     input2.value=c.value
+    const buttondiv=document.createElement('div')
+    buttondiv.classList.add('buttons')
     const buttonsave=document.createElement('img')
     buttonsave.classList.add('save')
     buttonsave.title='Save'
@@ -82,8 +84,11 @@ document.addEventListener('DOMContentLoaded',async function(){
     divcontenidofinal.appendChild(input)
     divcontenidofinal.appendChild(interior2)
     divcontenidofinal.appendChild(input2)
-    divcontenidofinal.appendChild(buttonsave)
-    divcontenidofinal.appendChild(buttondelete)
+    //divcontenidofinal.appendChild(buttonsave)
+    //divcontenidofinal.appendChild(buttondelete)
+    buttondiv.appendChild(buttonsave)
+    buttondiv.appendChild(buttondelete)
+    divcontenidofinal.appendChild(buttondiv)
     divcontenido.appendChild(divcontenidofinal)
     div.appendChild(divcontenido)
 

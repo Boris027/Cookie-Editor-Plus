@@ -129,3 +129,9 @@ img{
     color: white;
     margin: auto;
 }
+
+/*El div que contiene los botones de guardar y eliminar la cookie*/
+.buttons{
+    display:flex;
+    justify-content: flex-start;
+}
