@@ -1,9 +1,9 @@
 let cookies=''
 let number=0;
+//checks if the extension is in the advanced mode
+let option=localStorage.getItem('ButtonvalueAdvanced')
 
 document.addEventListener('DOMContentLoaded',async function(){
-    
-
     let tab=await getCurrentTab()
     console.log(tab)
 
@@ -78,6 +78,9 @@ document.addEventListener('DOMContentLoaded',async function(){
     buttondelete.id=''+number
     buttondelete.src='../img/delete.png'
 
+
+   
+
     h2.appendChild(button)
     div.appendChild(h2)
     divcontenidofinal.appendChild(interior)
@@ -86,11 +89,49 @@ document.addEventListener('DOMContentLoaded',async function(){
     divcontenidofinal.appendChild(input2)
     //divcontenidofinal.appendChild(buttonsave)
     //divcontenidofinal.appendChild(buttondelete)
+
+    if(option==='true'){
+        const interior3=document.createElement('p')
+        interior3.textContent='Domain'
+        const input3=document.createElement('input')
+        input3.value=c.domain
+        divcontenidofinal.appendChild(interior3)
+        divcontenidofinal.appendChild(input3)
+
+        const interior4=document.createElement('p')
+        interior4.textContent='Path'
+        const input4=document.createElement('input')
+        input4.value=c.path
+        divcontenidofinal.appendChild(interior4)
+        divcontenidofinal.appendChild(input4)
+
+
+        const interior5=document.createElement('p')
+        interior5.textContent='Expiration Date'
+        const input5=document.createElement('input')
+        input5.value=new Date(c.expirationDate)
+        divcontenidofinal.appendChild(interior5)
+        divcontenidofinal.appendChild(input5)
+
+        const interior6=document.createElement('p')
+        interior6.textContent='Same Site'
+        const input6=document.createElement('input')
+        input6.value=c.sameSite
+        divcontenidofinal.appendChild(interior6)
+        divcontenidofinal.appendChild(input6)
+        divcontenidofinal.appendChild(interior6)
+        divcontenidofinal.appendChild(input6)
+    }
+
+
     buttondiv.appendChild(buttonsave)
     buttondiv.appendChild(buttondelete)
     divcontenidofinal.appendChild(buttondiv)
     divcontenido.appendChild(divcontenidofinal)
     div.appendChild(divcontenido)
+
+
+    
 
     container.appendChild(div)
     number+=1;
@@ -211,6 +252,8 @@ document.getElementById('plus').addEventListener('click',function(){
     const input2=document.createElement('textarea')
     input2.id='input2'+number
     input2.value=''
+    const buttondiv=document.createElement('div')
+    buttondiv.classList.add('buttons')
     const buttonsave=document.createElement('img')
     buttonsave.classList.add('save')
     buttonsave.title='Save'
@@ -228,8 +271,11 @@ document.getElementById('plus').addEventListener('click',function(){
     divcontenidofinal.appendChild(input)
     divcontenidofinal.appendChild(interior2)
     divcontenidofinal.appendChild(input2)
-    divcontenidofinal.appendChild(buttonsave)
-    divcontenidofinal.appendChild(buttondelete)
+    //divcontenidofinal.appendChild(buttonsave)
+    //divcontenidofinal.appendChild(buttondelete)
+    buttondiv.appendChild(buttonsave)
+    buttondiv.appendChild(buttondelete)
+    divcontenidofinal.appendChild(buttondiv)
     divcontenido.appendChild(divcontenidofinal)
     div.appendChild(divcontenido)
 

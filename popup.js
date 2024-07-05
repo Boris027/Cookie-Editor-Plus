@@ -19,6 +19,43 @@ document.getElementById('clear').addEventListener('click',async function(){
     
 })
 
+//pone el clic activado o desactivado nada mas abrir la extension
+addEventListener('DOMContentLoaded',async function(){
+    //localStorage.setItem('ButtonvalueAdvanced','true')
+    let item=localStorage.getItem('ButtonvalueAdvanced')
+    
+    if(item===null){
+        //button.checked=true;
+        this.localStorage.setItem('ButtonvalueAdvanced',false)
+    }
+
+    item=localStorage.getItem('ButtonvalueAdvanced')
+    
+    if(item==='true'){
+        let button=this.document.getElementById('switchbutton')
+        button.checked=true;
+    }
+
+    
+})
+
+//controla el estado del localstorage respecto a si esta activado o no las funciones avanzadas
+document.getElementById('switchbutton').addEventListener('click',function(){
+    let item=localStorage.getItem('ButtonvalueAdvanced')
+    let value=''
+    console.log(item)
+
+      if(item==='false'){
+          value='true';
+      }else{
+          value='false';
+      }
+
+
+      localStorage.setItem('ButtonvalueAdvanced',value)
+  })
+
+
 
 //consigue la tab en la que te encuentras actualmente
 async function getCurrentTab() {

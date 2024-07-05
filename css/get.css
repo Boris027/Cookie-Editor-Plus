@@ -5,7 +5,7 @@ body{
 }
 
 #container{
-    min-width: 500px;
+    width: 350px;
     min-height: 300px;
     margin: 10px;
 }
@@ -16,7 +16,7 @@ body{
 }
 
 #cookies{
-    max-width: 400px;
+    max-width: 350px;
     max-height: 300px;
     overflow: auto;
 }
@@ -37,7 +37,7 @@ body{
 }
 
 .prueba{
-    max-width: 400px;
+    max-width: 350px;
     max-height: 300px;
     overflow: auto;
 }
@@ -75,7 +75,7 @@ body{
 
 .accordion-item{
     margin: auto;
-    width: 500px!important;
+    width: 350px!important;
     text-align: left!important;
 }
 

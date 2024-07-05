@@ -10,6 +10,11 @@ body{
    
 }
 
+#switchbutton{
+    margin-left: 22px;
+    margin-bottom: 10px;
+}
+
 
 .visible{
     display: none!important;
@@ -34,4 +39,8 @@ body{
 .letters{
     color: #D2B48C;
     text-align: center;
+}
+
+.white{
+    color: white;
 }
