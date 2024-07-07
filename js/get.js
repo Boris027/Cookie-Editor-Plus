@@ -94,6 +94,7 @@ document.addEventListener('DOMContentLoaded',async function(){
         const interior3=document.createElement('p')
         interior3.textContent='Domain'
         const input3=document.createElement('input')
+        input3.id="domain_"+number
         input3.value=c.domain
         divcontenidofinal.appendChild(interior3)
         divcontenidofinal.appendChild(input3)
@@ -101,6 +102,7 @@ document.addEventListener('DOMContentLoaded',async function(){
         const interior4=document.createElement('p')
         interior4.textContent='Path'
         const input4=document.createElement('input')
+        input4.id="Path_"+number
         input4.value=c.path
         divcontenidofinal.appendChild(interior4)
         divcontenidofinal.appendChild(input4)
@@ -109,18 +111,130 @@ document.addEventListener('DOMContentLoaded',async function(){
         const interior5=document.createElement('p')
         interior5.textContent='Expiration Date'
         const input5=document.createElement('input')
-        input5.value=new Date(c.expirationDate)
+        input5.id="date_"+number
+        input5.value=new Date(c.expirationDate*1000)
         divcontenidofinal.appendChild(interior5)
         divcontenidofinal.appendChild(input5)
 
         const interior6=document.createElement('p')
         interior6.textContent='Same Site'
-        const input6=document.createElement('input')
-        input6.value=c.sameSite
+        const input6=document.createElement('select')
+        input6.id="samesite_"+number
+        input6.classList.add('form-select')
+
+        const option0=document.createElement('option')
+        option0.textContent='Unspecified'
+        input6.appendChild(option0)
+        const option1=document.createElement('option')
+        option1.textContent='None'
+        input6.appendChild(option1)
+        const option2=document.createElement('option')
+        option2.textContent='Lax'
+        input6.appendChild(option2)
+        const option3=document.createElement('option')
+        option3.textContent='Strict'
+        input6.appendChild(option3)
+
+        if(c.sameSite==="no_restriction"){
+            option1.selected=true;
+        }else if(c.sameSite==="lax"){
+            option2.selected=true;
+        }else if(c.sameSite==="unspecified"){
+            option0.selected=true;
+        }else if(c.sameSite==="strict"){
+            option3.selected=true;
+        }
+
         divcontenidofinal.appendChild(interior6)
         divcontenidofinal.appendChild(input6)
         divcontenidofinal.appendChild(interior6)
         divcontenidofinal.appendChild(input6)
+
+
+        const divcheck1=document.createElement('div')
+        divcheck1.classList.add('checkboxitem')
+        divcheck1.classList.add='form-check'
+        const inputcheck1=document.createElement('input')
+        inputcheck1.id="inputcheck1_"+number
+        inputcheck1.classList.add('form-check-input')
+        inputcheck1.type='checkbox'
+        const label=document.createElement('label')
+        label.classList.add('form-check-label')
+        label.textContent='Host Only'
+
+        divcheck1.appendChild(inputcheck1)
+        divcheck1.appendChild(label)
+        divcontenidofinal.appendChild(divcheck1)
+
+
+        const divcheck2=document.createElement('div')
+        divcheck2.classList.add('checkboxitem')
+        divcheck2.classList.add='form-check'
+        const inputcheck2=document.createElement('input')
+        inputcheck2.id="inputcheck2_"+number
+        inputcheck2.classList.add('form-check-input')
+        inputcheck2.type='checkbox'
+        const label2=document.createElement('label')
+        label2.classList.add('form-check-label')
+        label2.textContent='Session'
+
+        divcheck2.appendChild(inputcheck2)
+        divcheck2.appendChild(label2)
+        divcontenidofinal.appendChild(divcheck2)
+
+
+        const divcheck3=document.createElement('div')
+        divcheck3.classList.add('checkboxitem')
+        divcheck3.classList.add='form-check'
+        const inputcheck3=document.createElement('input')
+        inputcheck3.id="inputcheck3_"+number
+        inputcheck3.classList.add('form-check-input')
+        inputcheck3.type='checkbox'
+        const label3=document.createElement('label')
+        label3.classList.add('form-check-label')
+        label3.textContent='Secure'
+
+        divcheck3.appendChild(inputcheck3)
+        divcheck3.appendChild(label3)
+        divcontenidofinal.appendChild(divcheck3)
+
+
+        const divcheck4=document.createElement('div')
+        divcheck4.classList.add('checkboxitem')
+        divcheck4.classList.add='form-check'
+        const inputcheck4=document.createElement('input')
+        inputcheck4.id="inputcheck4_"+number
+        inputcheck4.classList.add('form-check-input')
+        inputcheck4.type='checkbox'
+        const label4=document.createElement('label')
+        label4.classList.add('form-check-label')
+        label4.textContent='Http Only'
+
+        divcheck4.appendChild(inputcheck4)
+        divcheck4.appendChild(label4)
+        divcontenidofinal.appendChild(divcheck4)
+
+        if(c.secure===true){
+            inputcheck3.checked=true;
+        }
+
+        if(c.session===true){
+            inputcheck2.checked=true;
+            input5.disabled=true;
+            input5.value='No expiration'
+        }
+
+        if(c.hostOnly===true){
+            inputcheck1.checked=true;
+            input3.disabled=true;
+        }
+
+        if(c.httpOnly===true){
+            inputcheck4.checked=true;
+        }
+
+        
+
     }
 
 
@@ -157,41 +271,47 @@ document.getElementById('container').addEventListener('click',async function(){
 
         const input1=document.getElementById('input1'+number1).value
         const input2=document.getElementById('input2'+number1).value
+        
+        //utilizara una opción u otra, si esta activado o no el modo avanzado
+        if(option!=="true"){
 
-        //filtra por si la cookie ya existia o no
-        let cookie=cookies[parseInt(number1)]
-        if(cookie!==undefined){
+        
+            //filtra por si la cookie ya existia o no
+            let cookie=cookies[parseInt(number1)]
+                if(cookie!==undefined){
 
-            await clearcookie(cookie.name)
-            cookie.name=input1
-            cookie.value=input2
-            await setcookies(cookie)
-            window.location.reload()
+                    await clearcookie(cookie.name)
+                    cookie.name=input1
+                    cookie.value=input2
+                    await setcookies(cookie)
+                    window.location.reload()
+                }else{
+
+                    let tab=await getCurrentTab()
+                    let url=new URL(tab.url)
+                    const domain=url.hostname
+                    cookie={
+                        domain: domain,
+                        hostOnly: true,
+                        httpOnly: false,
+                        name: input1,
+                        path: "/",
+                        sameSite: "unspecified",
+                        secure: false,
+                        session: true,
+                        storeId: "0",
+                        value: input2
+                    }
+
+                    
+                    console.log(cookie)
+                    await setcookies(cookie)
+                    window.location.reload()
+            }
+        
         }else{
 
-            let tab=await getCurrentTab()
-            let url=new URL(tab.url)
-            const domain=url.hostname
-            cookie={
-                domain: domain,
-                hostOnly: true,
-                httpOnly: false,
-                name: input1,
-                path: "/",
-                sameSite: "unspecified",
-                secure: false,
-                session: true,
-                storeId: "0",
-                value: input2
-            }
-
-            
-            console.log(cookie)
-            await setcookies(cookie)
-            window.location.reload()
         }
-        
-
 
 
     }
@@ -210,6 +330,39 @@ document.getElementById('container').addEventListener('click',async function(){
         window.location.reload()
     }
     
+    //controla los checkbox
+    else if(event.target && event.target.classList.contains('form-check-input')){
+        let id=event.target.id
+
+        let item=document.getElementById(id)
+        let word=id.split('_')
+
+        
+
+        if(word[0]==="inputcheck1"){
+            let domain=document.getElementById('domain_'+word[1])
+            if(item.checked===true){
+                domain.disabled=true;
+            }else{
+                domain.disabled=false;
+            }
+        }else if(word[0]==="inputcheck2"){
+            let expiration=document.getElementById('date_'+word[1])
+            if(item.checked===true){
+                expiration.value='No expiration'
+                expiration.disabled=true;
+                
+            }else{
+                expiration.disabled=false;
+                console.log(cookies[parseInt(word[1])])
+                let expirationdate=new Date(cookies[parseInt(word[1])].expirationDate*1000)
+                console.log(expirationdate)
+                expiration.value=expirationdate
+            }
+        }
+
+
+    }
     
 })
 
