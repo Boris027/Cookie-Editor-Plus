@@ -273,11 +273,11 @@ document.getElementById('container').addEventListener('click',async function(){
         const input2=document.getElementById('input2'+number1).value
         
         //utilizara una opción u otra, si esta activado o no el modo avanzado
+        let cookie=cookies[parseInt(number1)]
         if(option!=="true"){
 
         
             //filtra por si la cookie ya existia o no
-            let cookie=cookies[parseInt(number1)]
                 if(cookie!==undefined){
 
                     await clearcookie(cookie.name)
@@ -299,7 +299,7 @@ document.getElementById('container').addEventListener('click',async function(){
                         sameSite: "unspecified",
                         secure: false,
                         session: true,
-                        storeId: "0",
+                        //storeId: "0",
                         value: input2
                     }
 
@@ -310,13 +310,64 @@ document.getElementById('container').addEventListener('click',async function(){
             }
         
         }else{
+            try {
+                console.log('advanced mode')
+                const domain=document.getElementById('domain_'+number1).value
+                const path=document.getElementById('Path_'+number1).value
+
+                const date=new Date(document.getElementById('date_'+number1).value)
+                let datefinal=date.getTime()
+
+                const samesite=(document.getElementById('samesite_'+number1).value).toLowerCase()
+                let finalsite=''
+                if(samesite==='none'){
+                    finalsite="no_restriction"
+                }else{
+                    finalsite=samesite
+                }
+
+                const hostonly=document.getElementById('inputcheck1_'+number1).checked
+                const session=document.getElementById('inputcheck2_'+number1).checked
+                const secure=document.getElementById('inputcheck3_'+number1).checked
+                const httponly=document.getElementById('inputcheck4_'+number1).checked
+
+                await clearcookie(cookie.name)
+                cookie={
+                    domain: domain,
+                    hostOnly: hostonly,
+                    httpOnly: httponly,
+                    name: input1,
+                    path: path,
+                    sameSite: finalsite,
+                    secure: secure,
+                    session: session,
+                    value: input2
+                }
+
+                console.log(datefinal)
+                if(!isNaN(datefinal)){
+                    cookie.expirationDate=datefinal;
+                }else{
+                    console.log('date is NaN')
+                }
+
+                console.log(cookie)
+                
+
+
+                await setcookies(cookie)
+
+            } catch (error) {
+                console.log('error while saving cookie with advanced mode')
+            }
+            
 
         }
 
 
     }
 
-    //boton de eliminar la cookie
+    //controla el boton de eliminar la cookie
     else if(event.target && event.target.classList.contains('delete')){
         let number1 = event.target.id;
 
@@ -469,8 +520,8 @@ async function getcookies(taburl) {
 
 //pone la cookie
 async function setcookies(c){
-    console.log('cookie')
-    console.log(c)
+    //console.log('cookie')
+    //console.log(c)
     
     let tab=await getCurrentTab()
     
@@ -500,8 +551,8 @@ async function clearcookie(c){
     let tab=await getCurrentTab()
 
     let cookies=await getcookies(tab.url)
-    console.log(cookies)
-    console.log(c)
+    //console.log(cookies)
+    //console.log(c)
     //elimina las cookies
     chrome.cookies.remove({url:tab.url, name:c}, function (details) {
         console.log(details)
