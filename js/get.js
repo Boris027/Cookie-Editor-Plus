@@ -333,7 +333,7 @@ document.getElementById('container').addEventListener('click',async function(){
 
                 await clearcookie(cookie.name)
                 cookie={
-                    domain: domain,
+                    //domain: domain,
                     hostOnly: hostonly,
                     httpOnly: httponly,
                     name: input1,
@@ -344,21 +344,27 @@ document.getElementById('container').addEventListener('click',async function(){
                     value: input2
                 }
 
-                console.log(datefinal)
+                if(hostonly===true){
+                    let tab=await getCurrentTab()
+                    let url=new URL(tab.url)
+                    const domain=url.hostname
+                }else{
+                    cookie.domain=domain
+                }
+
                 if(!isNaN(datefinal)){
                     cookie.expirationDate=datefinal;
                 }else{
                     console.log('date is NaN')
-                }
+                }                
 
                 console.log(cookie)
-                
-
-
                 await setcookies(cookie)
-
+                //window.location.reload()
             } catch (error) {
                 console.log('error while saving cookie with advanced mode')
+                //window.location.reload()
+                alert('error')
             }
             
 
