@@ -314,7 +314,6 @@ document.getElementById('container').addEventListener('click',async function(){
                 console.log('advanced mode')
                 const domain=document.getElementById('domain_'+number1).value
                 const path=document.getElementById('Path_'+number1).value
-
                 const date=new Date(document.getElementById('date_'+number1).value)
                 let datefinal=date.getTime()
 
@@ -331,7 +330,13 @@ document.getElementById('container').addEventListener('click',async function(){
                 const secure=document.getElementById('inputcheck3_'+number1).checked
                 const httponly=document.getElementById('inputcheck4_'+number1).checked
 
-                await clearcookie(cookie.name)
+                try {
+                    await clearcookie(cookie.name)
+                } catch (error) {
+                    console.log('error while clearing cookie')
+                }
+
+                
                 cookie={
                     //domain: domain,
                     hostOnly: hostonly,
@@ -353,18 +358,26 @@ document.getElementById('container').addEventListener('click',async function(){
                 }
 
                 if(!isNaN(datefinal)){
-                    cookie.expirationDate=datefinal;
+                    cookie.expirationDate=(datefinal/1000);
                 }else{
                     console.log('date is NaN')
-                }                
+                }
+
+                if(session===false && isNaN(datefinal)){
+                    cookie.expirationDate=(Date.now()/1000)
+                }
+
+                
+                
+                
 
                 console.log(cookie)
                 await setcookies(cookie)
-                //window.location.reload()
+                window.location.reload()
             } catch (error) {
                 console.log('error while saving cookie with advanced mode')
-                //window.location.reload()
-                alert('error')
+                window.location.reload()
+                alert('Fatal error')
             }
             
 
@@ -414,11 +427,31 @@ document.getElementById('container').addEventListener('click',async function(){
                 console.log(cookies[parseInt(word[1])])
                 let expirationdate=new Date(cookies[parseInt(word[1])].expirationDate*1000)
                 console.log(expirationdate)
-                expiration.value=expirationdate
+
+                if(!isNaN(expirationdate)){
+                    expiration.value=expirationdate
+                }else{
+                    let date=new Date()
+                    date.setHours(date.getHours()+1)
+                    
+                    expiration.value=date
+                }
+
             }
         }
 
 
+    }
+    //controla el same site
+    else if(event.target && event.target.classList.contains('form-select')){
+
+        let id=event.target.id
+        let item=document.getElementById(id)
+        let word=id.split('_')[1]
+        console.log(word)
+        if(item.value==='None'){
+            let inputcheck3=document.getElementById('inputcheck3_'+word).checked=true;
+        }
     }
     
 })
@@ -426,7 +459,7 @@ document.getElementById('container').addEventListener('click',async function(){
 
 
 //controla cuando se da al boton de añadir una cookie
-document.getElementById('plus').addEventListener('click',function(){
+document.getElementById('plus').addEventListener('click',async function(){
     const container=document.getElementById('container')
     const div=document.createElement('div')
     div.classList.add('accordion-item')
@@ -481,6 +514,162 @@ document.getElementById('plus').addEventListener('click',function(){
     divcontenidofinal.appendChild(input)
     divcontenidofinal.appendChild(interior2)
     divcontenidofinal.appendChild(input2)
+    
+
+    if(option==='true'){
+        let tab=await getCurrentTab()
+        let c=new URL(tab.url)
+        
+        const interior3=document.createElement('p')
+        interior3.textContent='Domain'
+        const input3=document.createElement('input')
+        input3.id="domain_"+number
+        input3.value=c.hostname
+        divcontenidofinal.appendChild(interior3)
+        divcontenidofinal.appendChild(input3)
+
+        const interior4=document.createElement('p')
+        interior4.textContent='Path'
+        const input4=document.createElement('input')
+        input4.id="Path_"+number
+        input4.value='/'
+        divcontenidofinal.appendChild(interior4)
+        divcontenidofinal.appendChild(input4)
+
+
+        const interior5=document.createElement('p')
+        interior5.textContent='Expiration Date'
+        const input5=document.createElement('input')
+        input5.id="date_"+number
+
+        let date=new Date()
+        date.setHours(date.getHours()+1)
+        input5.value=date
+
+        divcontenidofinal.appendChild(interior5)
+        divcontenidofinal.appendChild(input5)
+
+        const interior6=document.createElement('p')
+        interior6.textContent='Same Site'
+        const input6=document.createElement('select')
+        input6.id="samesite_"+number
+        input6.classList.add('form-select')
+
+        const option0=document.createElement('option')
+        option0.textContent='Unspecified'
+        input6.appendChild(option0)
+        const option1=document.createElement('option')
+        option1.textContent='None'
+        input6.appendChild(option1)
+        const option2=document.createElement('option')
+        option2.textContent='Lax'
+        input6.appendChild(option2)
+        const option3=document.createElement('option')
+        option3.textContent='Strict'
+        input6.appendChild(option3)
+
+        if(c.sameSite==="no_restriction"){
+            option1.selected=true;
+        }else if(c.sameSite==="lax"){
+            option2.selected=true;
+        }else if(c.sameSite==="unspecified"){
+            option0.selected=true;
+        }else if(c.sameSite==="strict"){
+            option3.selected=true;
+        }
+
+        divcontenidofinal.appendChild(interior6)
+        divcontenidofinal.appendChild(input6)
+        divcontenidofinal.appendChild(interior6)
+        divcontenidofinal.appendChild(input6)
+
+
+        const divcheck1=document.createElement('div')
+        divcheck1.classList.add('checkboxitem')
+        divcheck1.classList.add='form-check'
+        const inputcheck1=document.createElement('input')
+        inputcheck1.id="inputcheck1_"+number
+        inputcheck1.classList.add('form-check-input')
+        inputcheck1.type='checkbox'
+        const label=document.createElement('label')
+        label.classList.add('form-check-label')
+        label.textContent='Host Only'
+
+        divcheck1.appendChild(inputcheck1)
+        divcheck1.appendChild(label)
+        divcontenidofinal.appendChild(divcheck1)
+
+
+        const divcheck2=document.createElement('div')
+        divcheck2.classList.add('checkboxitem')
+        divcheck2.classList.add='form-check'
+        const inputcheck2=document.createElement('input')
+        inputcheck2.id="inputcheck2_"+number
+        inputcheck2.classList.add('form-check-input')
+        inputcheck2.type='checkbox'
+        const label2=document.createElement('label')
+        label2.classList.add('form-check-label')
+        label2.textContent='Session'
+
+        divcheck2.appendChild(inputcheck2)
+        divcheck2.appendChild(label2)
+        divcontenidofinal.appendChild(divcheck2)
+
+
+        const divcheck3=document.createElement('div')
+        divcheck3.classList.add('checkboxitem')
+        divcheck3.classList.add='form-check'
+        const inputcheck3=document.createElement('input')
+        inputcheck3.id="inputcheck3_"+number
+        inputcheck3.classList.add('form-check-input')
+        inputcheck3.type='checkbox'
+        const label3=document.createElement('label')
+        label3.classList.add('form-check-label')
+        label3.textContent='Secure'
+
+        divcheck3.appendChild(inputcheck3)
+        divcheck3.appendChild(label3)
+        divcontenidofinal.appendChild(divcheck3)
+
+
+        const divcheck4=document.createElement('div')
+        divcheck4.classList.add('checkboxitem')
+        divcheck4.classList.add='form-check'
+        const inputcheck4=document.createElement('input')
+        inputcheck4.id="inputcheck4_"+number
+        inputcheck4.classList.add('form-check-input')
+        inputcheck4.type='checkbox'
+        const label4=document.createElement('label')
+        label4.classList.add('form-check-label')
+        label4.textContent='Http Only'
+
+        divcheck4.appendChild(inputcheck4)
+        divcheck4.appendChild(label4)
+        divcontenidofinal.appendChild(divcheck4)
+
+        if(c.secure===true){
+            inputcheck3.checked=true;
+        }
+
+        if(c.session===true){
+            inputcheck2.checked=true;
+            input5.disabled=true;
+            input5.value='No expiration'
+        }
+
+        if(c.hostOnly===true){
+            inputcheck1.checked=true;
+            input3.disabled=true;
+        }
+
+        if(c.httpOnly===true){
+            inputcheck4.checked=true;
+        }
+
+        
+
+    }
+
     //divcontenidofinal.appendChild(buttonsave)
     //divcontenidofinal.appendChild(buttondelete)
     buttondiv.appendChild(buttonsave)
@@ -554,18 +743,20 @@ async function setcookies(c){
 //elimina la cookie
 async function clearcookie(c){
 
-    let tab=await getCurrentTab()
-
-    let cookies=await getcookies(tab.url)
-    //console.log(cookies)
-    //console.log(c)
-    //elimina las cookies
-    chrome.cookies.remove({url:tab.url, name:c}, function (details) {
-        console.log(details)
-    })
     
+        
     
+        let tab=await getCurrentTab()
 
+        let cookies=await getcookies(tab.url)
+        //console.log(cookies)
+        //console.log(c)
+        //elimina las cookies
+        chrome.cookies.remove({url:tab.url, name:c}, function (details) {
+            console.log(details)
+        })
+
+    
     
 }
     
