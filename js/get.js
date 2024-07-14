@@ -15,7 +15,10 @@ document.addEventListener('DOMContentLoaded',async function(){
 
    //recorre el array y genera visualmente las cookies en el html
 
-   if(cookies.length===0){
+    let url=new URL(tab.url)
+
+   
+    if(cookies.length===0){
     const container=document.getElementById('container')
     const div=document.createElement('div')
     container.style.display='flex'
@@ -23,8 +26,9 @@ document.addEventListener('DOMContentLoaded',async function(){
     container.style.alignItems='center'
     const interior2=document.createElement('p')
     interior2.classList.add('nocookies')
-    interior2.textContent=`Cookie Editor+ can't display cookies for this page.`
-
+    interior2.id='nocookies'
+    //interior2.textContent=`Cookie Editor+ can't display cookies for this page.`
+    interior2.textContent=`There aren´t any cookies`
     div.appendChild(interior2)
     container.appendChild(div)
    }
@@ -305,7 +309,11 @@ document.getElementById('container').addEventListener('click',async function(){
 
                     
                     console.log(cookie)
-                    await setcookies(cookie)
+                    try {
+                        await setcookies(cookie)
+                    } catch (error) {
+                        console.log('error saving the cookies')
+                    }
                     window.location.reload()
             }
         
@@ -424,8 +432,15 @@ document.getElementById('container').addEventListener('click',async function(){
                 
             }else{
                 expiration.disabled=false;
-                console.log(cookies[parseInt(word[1])])
-                let expirationdate=new Date(cookies[parseInt(word[1])].expirationDate*1000)
+
+                let expirationdate=''
+
+                try {
+                    expirationdate=new Date(cookies[parseInt(word[1])].expirationDate*1000)
+                } catch (error) {
+                    expirationdate=NaN
+                }
+
                 console.log(expirationdate)
 
                 if(!isNaN(expirationdate)){
@@ -460,6 +475,19 @@ document.getElementById('container').addEventListener('click',async function(){
 
 //controla cuando se da al boton de añadir una cookie
 document.getElementById('plus').addEventListener('click',async function(){
+
+    //elimina el texto de que no hay cookies o no estan disponibles y modifica el container
+    try {
+        let nocookies=document.getElementById('nocookies')
+        nocookies.remove()
+        let container=document.getElementById('container')
+        container.style.display=''
+        container.style.justifyContent=''
+        container.style.alignItems=''
+    } catch (error) {
+        console.log('this page is normal or have cookies')
+    }
+
     const container=document.getElementById('container')
     const div=document.createElement('div')
     div.classList.add('accordion-item')
@@ -719,7 +747,7 @@ async function setcookies(c){
     //console.log(c)
     
     let tab=await getCurrentTab()
-    
+    try {
         await chrome.cookies.set({
             url: tab.url,
             domain: c.domain ?? null,
@@ -736,6 +764,10 @@ async function setcookies(c){
         }, function(cookie) {
             console.log('Cookie establecida:', cookie);
         });
+    } catch (error) {
+        console.log('error while saving cookies')
+    }
+        
     
 }
 
