@@ -17,21 +17,43 @@ document.addEventListener('DOMContentLoaded',async function(){
 
     let url=new URL(tab.url)
 
-   
-    if(cookies.length===0){
-    const container=document.getElementById('container')
-    const div=document.createElement('div')
-    container.style.display='flex'
-    container.style.justifyContent='center'
-    container.style.alignItems='center'
-    const interior2=document.createElement('p')
-    interior2.classList.add('nocookies')
-    interior2.id='nocookies'
-    //interior2.textContent=`Cookie Editor+ can't display cookies for this page.`
-    interior2.textContent=`There aren´t any cookies`
-    div.appendChild(interior2)
-    container.appendChild(div)
+    if (!tab.url || !/^https?:\/\//.test(tab.url)) {
+
+        console.log('URL no válida:');
+        const container=document.getElementById('container')
+        const div=document.createElement('div')
+        container.style.display='flex'
+        container.style.justifyContent='center'
+        container.style.alignItems='center'
+        const interior2=document.createElement('p')
+        interior2.classList.add('nocookies')
+        interior2.id='nocookies'
+        //interior2.textContent=`Cookie Editor+ can't display cookies for this page.`
+        interior2.textContent=`Cookie Editor+ can't display cookies for this page.`
+        div.appendChild(interior2)
+        container.appendChild(div)
+
+        plus=document.getElementById('plus')
+        plus.remove()
+
+    }else if(cookies.length===0){
+
+        const container=document.getElementById('container')
+        const div=document.createElement('div')
+        container.style.display='flex'
+        container.style.justifyContent='center'
+        container.style.alignItems='center'
+        const interior2=document.createElement('p')
+        interior2.classList.add('nocookies')
+        interior2.id='nocookies'
+        //interior2.textContent=`Cookie Editor+ can't display cookies for this page.`
+        interior2.textContent=`There aren´t any cookies`
+        div.appendChild(interior2)
+        container.appendChild(div)
    }
+
+   console.log('cookies')
+   console.log(cookies)
 
    cookies.map(c=>{
 
@@ -747,27 +769,33 @@ async function setcookies(c){
     //console.log(c)
     
     let tab=await getCurrentTab()
-    try {
-        await chrome.cookies.set({
-            url: tab.url,
-            domain: c.domain ?? null,
-            expirationDate: c.expirationDate ?? null, 
-            //hostOnly: c.hostonly ?? null,
-            httpOnly: c.httpOnly ?? null,
-            name: c.name ?? null,
-            path: c.path ?? null,
-            sameSite: c.sameSite ?? null,
-            secure: c.secure ?? null,
-            //session: c.session ?? null,
-            storeId: c.storeId ?? null,
-            value: c.value ?? null
-        }, function(cookie) {
-            console.log('Cookie establecida:', cookie);
-        });
-    } catch (error) {
-        console.log('error while saving cookies')
-    }
+
+    // Verificar que la URL de la pestaña sea válida
+    if (!tab.url || !/^https?:\/\//.test(tab.url)) {
+        console.log('URL no válida:');
         
+    }else{
+        try {
+            await chrome.cookies.set({
+                url: tab.url,
+                domain: c.domain ?? null,
+                expirationDate: c.expirationDate ?? null, 
+                //hostOnly: c.hostonly ?? null,
+                httpOnly: c.httpOnly ?? null,
+                name: c.name ?? null,
+                path: c.path ?? null,
+                sameSite: c.sameSite ?? null,
+                secure: c.secure ?? null,
+                //session: c.session ?? null,
+                storeId: c.storeId ?? null,
+                value: c.value ?? null
+            }, function(cookie) {
+                console.log('Cookie establecida:', cookie);
+            });
+        } catch (error) {
+            console.log('error while saving cookies')
+        }
+    }    
     
 }
 
