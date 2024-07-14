@@ -806,15 +806,15 @@ async function clearcookie(c){
     
         
     
-        let tab=await getCurrentTab()
+    let tab=await getCurrentTab()
 
-        let cookies=await getcookies(tab.url)
-        //console.log(cookies)
-        //console.log(c)
-        //elimina las cookies
-        chrome.cookies.remove({url:tab.url, name:c}, function (details) {
-            console.log(details)
-        })
+    let cookies=await getcookies(tab.url)
+    //console.log(cookies)
+    //console.log(c)
+    //elimina las cookies
+    chrome.cookies.remove({url:tab.url, name:c}, function (details) {
+        console.log(details)
+    })
 
     
     
