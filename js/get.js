@@ -65,7 +65,9 @@ document.addEventListener('DOMContentLoaded',async function(){
     const button=document.createElement('button')
     button.classList.add('accordion-button')
     button.classList.add('collapsed')
-    button.textContent = c.name;  // Añadir texto al botón
+
+    let name=c.name
+    button.textContent = name.substring(0,33);  // Añadir texto al botón, ademas de ponerle un maximo de tamaño para que no se salga
     button.setAttribute('type','button')
     button.setAttribute('data-bs-toggle','collapse')
     button.setAttribute('data-bs-target','#collapse'+number)
