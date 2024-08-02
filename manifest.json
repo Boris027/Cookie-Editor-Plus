@@ -12,7 +12,7 @@
     "48": "logo.png",
     "128": "logo.png"
   },
-  "description": "Permite gestionar, eliminar, actualizar, copiar, limpiar cookies",
+  "description": "Allows you to manage, delete, update, copy and clear cookies.",
   "permissions": [
     "cookies",
     "activeTab",
