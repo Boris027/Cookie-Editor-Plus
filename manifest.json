@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "CookiesEditor+",
+  "name": "Cookie-Editor+",
   "version": "1.0",
   "action": {
     "default_popup": "popup.html",
@@ -15,8 +15,6 @@
   "description": "Allows you to manage, delete, update, copy and clear cookies.",
   "permissions": [
     "cookies",
-    "activeTab",
-    "scripting",
     "tabs"
   ],
   "host_permissions": [
